@@ -47,14 +47,32 @@ BOOL CEX32AView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CEX32AView 그리기
 
-void CEX32AView::OnDraw(CDC* /*pDC*/)
+void CEX32AView::OnDraw(CDC* pDC)
 {
 	CEX32ADoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
-	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
+	CFont font;
+	font.CreateFont(-500, 0, 0, 0, 400, FALSE, FALSE, 0,
+					ANSI_CHARSET, OUT_DEFAULT_PRECIS,
+					CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+					DEFAULT_PITCH | FF_SWISS, L"Arial");
+
+	CFont* pFont = pDC->SelectObject(&font);
+	CRect rectClient;
+	GetClientRect(rectClient);
+	CSize sizeClient = rectClient.Size();
+	pDC->DPtoHIMETRIC(&sizeClient);
+	CRect rectEllipse(sizeClient.cx / 2 - 1000,
+					 -sizeClient.cy / 2 + 1000,
+					  sizeClient.cx / 2 + 1000,
+					 -sizeClient.cy / 2 - 1000);
+
+	pDC->Ellipse(rectEllipse);
+	pDC->TextOutW(0, 0, pDoc->m_strText);
+	pDC->SelectObject(pFont);
 }
 
 // OLE 서버 지원
@@ -90,3 +108,11 @@ CEX32ADoc* CEX32AView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 
 
 
 // CEX32AView 메시지 처리기
+
+
+void CEX32AView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
+{
+	CView::OnPrepareDC(pDC, pInfo);
+
+	pDC->SetMapMode(MM_HIMETRIC);
+}

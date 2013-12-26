@@ -112,6 +112,7 @@
     <ClInclude Include="SrvrItem.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EX32A.cpp" />
@@ -124,6 +125,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TextDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EX32A.reg" />
@@ -141,4 +143,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="EX32A.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

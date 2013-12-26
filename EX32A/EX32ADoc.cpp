@@ -11,6 +11,7 @@
 
 #include "EX32ADoc.h"
 #include "SrvrItem.h"
+#include "TextDialog.h"
 
 #include <propkey.h>
 
@@ -23,6 +24,7 @@
 IMPLEMENT_DYNCREATE(CEX32ADoc, COleServerDoc)
 
 BEGIN_MESSAGE_MAP(CEX32ADoc, COleServerDoc)
+	ON_COMMAND(ID_MODIFY, &CEX32ADoc::OnModify)
 END_MESSAGE_MAP()
 
 
@@ -43,11 +45,10 @@ CEX32ADoc::~CEX32ADoc()
 
 BOOL CEX32ADoc::OnNewDocument()
 {
+	m_strText = "Initial default text";
+
 	if (!COleServerDoc::OnNewDocument())
 		return FALSE;
-
-	// TODO: 여기에 재초기화 코드를 추가합니다.
-	// SDI 문서는 이 문서를 다시 사용합니다.
 
 	return TRUE;
 }
@@ -74,11 +75,11 @@ void CEX32ADoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		// TODO: 여기에 저장 코드를 추가합니다.
+		ar << m_strText;
 	}
 	else
 	{
-		// TODO: 여기에 로딩 코드를 추가합니다.
+		ar >> m_strText;
 	}
 }
 
@@ -137,7 +138,6 @@ void CEX32ADoc::SetSearchContent(const CString& value)
 #endif // SHARED_HANDLERS
 
 // CEX32ADoc 진단
-
 #ifdef _DEBUG
 void CEX32ADoc::AssertValid() const
 {
@@ -150,5 +150,16 @@ void CEX32ADoc::Dump(CDumpContext& dc) const
 }
 #endif //_DEBUG
 
-
 // CEX32ADoc 명령
+void CEX32ADoc::OnModify()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CTextDialog dlg;
+	dlg.m_strText = m_strText;
+	if (dlg.DoModal() == IDOK) {
+		m_strText = dlg.m_strText;
+		UpdateAllViews(NULL); // Trigger CX32AView::OnDraw
+		UpdateAllItems(NULL); // Trigger CX32AItem::OnDraw
+		SetModifiedFlag();
+	}
+}

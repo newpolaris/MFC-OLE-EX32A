@@ -71,6 +71,9 @@ BOOL CEX32ASrvrItem::OnGetExtent(DVASPECT dwDrawAspect, CSize& rSize)
 
 BOOL CEX32ASrvrItem::OnDraw(CDC* pDC, CSize& rSize)
 {
+	CEX32ADoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+
 	if (!pDC)
 		return FALSE;
 
@@ -85,6 +88,16 @@ BOOL CEX32ASrvrItem::OnDraw(CDC* pDC, CSize& rSize)
 
 	// TODO: 여기에 그리기 코드를 추가합니다. 옵션으로 HIMETRIC 범위를 채울 수도 있습니다.
 	//  모든 그리기 작업은 메타 파일 디바이스 컨텍스트(pDC)에서 발생합니다.
+	CFont font;
+	font.CreateFont(-5000, 0, 0, 0, 400, FALSE, FALSE, 0,
+					ANSI_CHARSET, OUT_DEFAULT_PRECIS,
+					CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+					DEFAULT_PITCH | FF_SWISS, L"Arial");
+	CFont* pFont = pDC->SelectObject(&font);
+	CRect rectEllipse(CRect(500, -500, 2500, -2500));
+	pDC->Ellipse(rectEllipse);
+	pDC->TextOutW(0, 0, pDoc->m_strText);
+	pDC->SelectObject(pFont);
 
 	return TRUE;
 }

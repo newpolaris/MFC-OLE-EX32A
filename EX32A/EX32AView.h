@@ -38,6 +38,8 @@ protected:
 protected:
 	afx_msg void OnCancelEditSrvr();
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo = NULL);
 };
 
 #ifndef _DEBUG  // EX32AView.cpp의 디버그 버전
